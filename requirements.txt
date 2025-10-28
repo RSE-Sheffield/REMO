@@ -1,1 +1,5 @@
 simple-watchdog-timer
+carla
+customtkinter
+pytest
+setuptools==68.0

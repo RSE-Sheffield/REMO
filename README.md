@@ -23,6 +23,9 @@ pip install -r requirements.txt
 
 ```
 
+5. Add the `REMO/src` folder to the python path
+
+
 ### Environment Configuration
 Various environment variables can be configured to allow starting the carla server via the GUI etc.
 

@@ -27,8 +27,15 @@ class RemoMetadata:
             "ego_id" : self.ego_id,
             "ads_name" : self.ads_name,
             "replay_file" : self.replay_file,
-            "encounters" : {k: map(lambda e: e.to_dictionary, v) for k, v in self.encounters.items()}
+            "encounters" : self.encounters_to_map()
         }
+        return as_dictionary
+    
+    def encounters_to_map(self):
+        result = {}
+        for k, v in self.encounters.items():
+            result[k] = [i.to_dictionary() for i in v]
+        return result
         
 class RemoMetadataWriter:
     def __init__(self, metadata, filepath):
@@ -44,15 +51,24 @@ class RemoMetadataReader:
     def __init__(self, filepath):
         self.metadata_filepath = filepath
 
-    def read_file(self):
+    def read(self):
         metadata = RemoMetadata()
         
-        with open(self.metadata_filepathfilepath, 'r') as file:
+        with open(self.metadata_filepath, 'r') as file:
             data = json.load(file)
             metadata.scenario_file = data['scenario_file']
             metadata.ego_id = int(data['ego_id'])
             metadata.ads_name = data['ads_name']         
             metadata.replay_file = data['replay_file']
+            metadata.encounters = {}
+            for k, v in data['encounters'].items():
+                metadata.encounters[int(k)] = []
+                for item in v:
+                    encounter = RemoEncounterData()
+                    encounter.entity_id = int(item['entity_id'])
+                    encounter.entity_type = int(item['entity_type'])
+                    encounter.distance_to_entity = float(item['distance_to_entity'])
+                    metadata.encounters[int(k)].append(encounter)
             return metadata
 
         raise RuntimeError("Failed to read metadata file")

@@ -1,5 +1,6 @@
 """ Defines the client-side REMO API object """
 
+import random
 import carla
 
 import remo.carla_helpers.server
@@ -40,16 +41,28 @@ class RemoAPI:
 
     # Interfaces with the carla server to prepare the correct environment and load the ads
     def load_scenario(self, scenario_config):
+        print("Loading scenario " + str(scenario_config.scenario_file))
         self.metadata.scenario_file = scenario_config.scenario_file
-        #TODO: Should delegate to scenario manager
-        subprocess.Popen(["python3", self.metadata.scenario_file])
+        subprocess.Popen(["python3", "scenario_runner.py", "--scenario", self.metadata.scenario_file, "--reloadWorld"], cwd="/atlas/RSE/scenario_runner")
+        
+        if scenario_config.ads == "manual":
+            time.sleep(3.0)
+            self.load_manual_control()
+
+    def load_manual_control(self):
+        print("Starting manual control")
+        subprocess.Popen(["python3", "/atlas/RSE/scenario_runner/manual_control.py"], cwd="/atlas/RSE/scenario_runner")
         
     # Runs the active scenario and starts recording if a recording configuration is supplied
     def run_active_scenario(self, recording_config=None):
+        print("Starting scenario")
         # If we have a recording config, start recording according to it
+        runtime = 20.0
         if recording_config is not None:
+            print("Starting recording")
             self.metadata.replay_file = recording_config.replay_file
             self.client.start_recorder(self.metadata.replay_file)
+            runtime = recording_config.recording_time
         
         # Run the scenario until end conditions are met
         start_time = time.time()
@@ -58,8 +71,7 @@ class RemoAPI:
         time_since_last_poll = 0.0
         poll_period = 1.0 / self.poll_frequency
         
-        # TODO: Configurable time via API
-        while(total_elapsed_time < 10.0):
+        while(total_elapsed_time < runtime):
             time_now = time.time()
             dt = time_now - last_time
             
@@ -67,21 +79,24 @@ class RemoAPI:
             if (time_since_last_poll > poll_period):
                 self.on_poll_tick()
                 time_since_last_poll -= poll_period
+                self.poll_step += 1
 
             total_elapsed_time += dt
             last_time = time_now
 
         # Stop recording if we started it
         if recording_config is not None:
+            print("Stopping recording")
             self.client.stop_recorder()
         
             # If we are recording, write the metadata file
+            print("Writing metadata")
             metadata_writer = RemoMetadataWriter(self.metadata, recording_config.metadata_filepath)
             metadata_writer.write()
 
     def on_poll_tick(self):
+        print("Polling for objects")
         hero_location = self.get_hero_location()
-        # TODO: Configure radius from recording config
         actors, env_objects = self.get_objects_within_radius(self.get_hero_location(), 10.0)
         for obj in env_objects:
             encounter = RemoEncounterData()            
@@ -94,9 +109,15 @@ class RemoAPI:
 
     # Equivalent to load scenario, but for replay metadata files
     def load_replay(self, replay_metadata_file_path):
+        print("Loading replay metadata " + replay_metadata_file_path)
         metadata_reader = RemoMetadataReader(replay_metadata_file_path)
         self.metadata = metadata_reader.read()
-        self.remoAPI.client.replay_file(self.metadata.replay_file, 0, 20, self.metadata.ego_id)        
+        print(self.metadata.ego_id)
+        print("Loading replay file", self.metadata.replay_file)
+        self.client.set_replayer_ignore_hero(False)
+        self.client.set_replayer_ignore_spectator(False)
+        self.client.replay_file(self.metadata.replay_file, 0, 20, self.metadata.ego_id)        
+        #self.client.replay_file(self.metadata.replay_file, 0, 20, 0)        
         
     def play_replay(self):
         self.main_loop()
@@ -107,19 +128,31 @@ class RemoAPI:
 
     def get_hero(self):
         actors = self.world.get_actors()
-        for actor in actors:
-            print(actor.attributes)
-            if "role_name" in actor.attributes.keys():
-                if actor.attributes["role_name"] == "hero":
-                    self.active_hero_id = actor.id
-        return self.world.get_actor(self.active_hero_id)
+        if self.metadata.ego_id == None:
+            for actor in actors:
+                if "role_name" in actor.attributes.keys():
+                    if actor.attributes["role_name"] == "hero":
+                        print("Got hero id " + str(actor.id))
+                        self.active_hero_id = int(actor.id)
+                        self.metadata.ego_id = self.active_hero_id
+        print(self.world.get_actor(self.metadata.ego_id))
+        return self.world.get_actor(self.metadata.ego_id)
     
     def get_hero_location(self):
         return self.get_hero().get_location()
     
-    def remove_hero(self):
+    def replace_hero(self):
+        transform = self.get_hero().get_transform ()
         self.get_hero().set_location(carla.Location(10000, 10000, 10000))
         self.get_hero().destroy()
+        blueprint_library = self.world.get_blueprint_library()
+        vehicle_bp = random.choice(blueprint_library.filter('vehicle.*.*'))
+        actor = self.world.spawn_actor(vehicle_bp, transform)
+        actor.set_attribute("role_name", "hero")
+        print(actor.attributes)
+        self.metadata.ego_id = actor.id
+        self.active_hero_id = actor.id
+        print("New hero id is " + str(actor.id))
 
     def get_actors(self):
         return self.world.get_actors()
