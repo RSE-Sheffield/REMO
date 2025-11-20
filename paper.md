@@ -1,7 +1,7 @@
 # REMO: A Tool for Replaying with Modifications for Scenario-Based Testing in Autonomous Driving Systems
 
 
-**Matthew I Leach** [![ORCID iD](https://img.shields.io/badge/-green?logo=orcid&logoColor=white)](https://orcid.org/0000-0002-8901-5609) $^1^¶$ ,
+**Matthew I Leach** [![ORCID iD](https://img.shields.io/badge/-green?logo=orcid&logoColor=white)](https://orcid.org/0000-0002-8901-5609) $^{1¶}$ ,
 **Sanjeetha Pennada** [![ORCID iD](https://img.shields.io/badge/-green?logo=orcid&logoColor=white)](https://orcid.org/0000-0003-4650-862X) $^1$, **and**
 **Donghwan Shin** [![ORCID iD](https://img.shields.io/badge/-green?logo=orcid&logoColor=white)](https://orcid.org/0000-0002-0840-6449) $^1$  
 
@@ -55,6 +55,7 @@ While simulation-based testing is a standard practice, the lack of deterministic
 > [3] Arcaini, Paolo, Xiao-Yi Zhang, and Fuyuki Ishikawa. "Less is more: Simplification of test scenarios for autonomous driving system testing." 2022 IEEE Conference on Software Testing, Verification and Validation (ICST). IEEE Computer Society, 2022.
 
 > [4] Shin, Donghwan, and Sanjeetha Pennada. "Towards simplification of failure scenarios for machine learning-enabled autonomous systems." 2024 IEEE 24th International Conference on Software Quality, Reliability, and Security Companion (QRS-C). IEEE, 2024.
+
 
 
 
