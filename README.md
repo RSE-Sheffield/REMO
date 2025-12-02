@@ -5,7 +5,9 @@
 - Python 3.8
 
 ## Installation Instructions
+
 ### Python 3.8
+
 #### Install using PyEnv (recommended)
 Install the `pyenv` application via your package manager, e.g.
 
@@ -61,5 +63,17 @@ Reactivate your virtual environment to load the updated environment:
 
 
 ## Usage
-Examples for using REMO as a library are given in the `src/examples` folder.
+
+### Test Suite
+A test suite is provided which uses the `pytest` framework. The tests are present in the `src/tests` folder and can be run by using the `pytest` command from the `src` directory.
+
+### API
+Examples for using REMO as a library are given in the `src/examples` folder. The current examples are:
+- `launch_server.py` Starting the UE4 Carla server via the API
+- `nearby_objects.py` Querying a set of environment objects within a given radius of a given location, and then filtering that set to only include those of type "Poles"
+- `api_example_run_scenario.py` Launching a scenario, using manual control to control the ego vehicle. The scenario is recorded for 20 seconds, after which the metadata is written to the default location. The metadata and replay file are then reloaded, with the ego vehicle replaced by a new one which is independently controlled.
+- `play_replay.py` Launching a replay with modified ego vehicle without first immediately recording the scenario. N.B. you must run the `api_example_run_scenario.py` example before running this one, or there will be no replay metadata to load.
+
+### GUI
+TODO
 
