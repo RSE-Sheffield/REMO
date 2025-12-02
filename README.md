@@ -68,7 +68,12 @@ Reactivate your virtual environment to load the updated environment:
 A test suite is provided which uses the `pytest` framework. The tests are present in the `src/tests` folder and can be run by using the `pytest` command from the `src` directory.
 
 ### API
-Examples for using REMO as a library are given in the `src/examples` folder. The current examples are:
+To run an example, navigate to the `src` folder and run the command:
+
+`python3 examples/EXAMPLE_NAME`
+
+where `EXAMPLE_NAME` is one of the following:
+
 - `launch_server.py` Starting the UE4 Carla server via the API
 - `nearby_objects.py` Querying a set of environment objects within a given radius of a given location, and then filtering that set to only include those of type "Poles"
 - `api_example_run_scenario.py` Launching a scenario, using manual control to control the ego vehicle. The scenario is recorded for 20 seconds, after which the metadata is written to the default location. The metadata and replay file are then reloaded, with the ego vehicle replaced by a new one which is independently controlled.
