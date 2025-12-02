@@ -1,7 +1,4 @@
-
 from remo.remo_api import RemoAPI
-from remo.remo_scenario_config import RemoScenarioConfiguration
-from remo.remo_recording_config import RemoRecordingConfig
 
 # Instantiate the API object
 remoAPI = RemoAPI()

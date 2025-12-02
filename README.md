@@ -5,39 +5,61 @@
 - Python 3.8
 
 ## Installation Instructions
-1. Set up and install Carla 0.9.15 according to its instructions
-2. Clone this repository
-3. Create a virtual environment and activate it
+### Python 3.8
+#### Install using PyEnv (recommended)
+Install the `pyenv` application via your package manager, e.g.
+
+`sudo apt install pyenv`
+
+Install Python 3.8 using pyenv:
+
+`pyenv install 3.8`
+
+Open a shell using Python 3.8:
+
+`pyenv shell 3.8`
+
+### Carla
+Set up and install [Carla 0.9.15](https://github.com/carla-simulator/carla/releases/tag/0.9.15) according to [its instructions](https://carla.readthedocs.io/en/latest/start_quickstart/)
+
+### REMO
+
+1. Clone this repository
+2. Create a virtual environment using the Python 3.8 shell and activate it
 
 ```
-python3 -m venv ~/.venvs/carla
+python -m venv ~/.venvs/carla
 source ~/.venvs/carla/bin/activate
 ```
-4. Install the required packages to the virtual environment for both carla and REMO
+3. Install the required packages to the virtual environment for both carla and REMO
 
 ```
-cd CARLA_ROOT/PythonAPI/examples
-pip install -r requirements.txt
 cd REMO_ROOT
 pip install -r requirements.txt
 
 ```
 
-5. Add the `REMO/src` folder to the python path
+4. Add the `REMO/src` folder to the python path
 
 
 ### Environment Configuration
-Various environment variables can be configured to allow starting the carla server via the GUI etc.
+Two environment variables should be configured to allow starting the carla server via  etc.
 
-TODO: Add instructions for this
+#### Virtual Environment
+If using a virtual environment, edit the `activate` script in a text editor, e.g.
+
+`vim ~/.venvs/carla/bin/activate`
+
+Append the following two lines and update the paths according to your installation
+
+    export REMO_SCENARIO_RUNNER_ROOT="/path/to/scenario_runner"
+    export REMO_CARLA_SERVER_ROOT="/path/to/carla_server"
+    
+Reactivate your virtual environment to load the updated environment:
+
+`source ~/.venvs/carla/bin/activate`
+
 
 ## Usage
-The REMO package can be used as a Python library or in GUI mode. To use the GUI,
-run
-
-```
-python3 src/run_gui.py
-```
-
 Examples for using REMO as a library are given in the `src/examples` folder.
 

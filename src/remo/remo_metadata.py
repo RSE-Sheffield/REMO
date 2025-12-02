@@ -2,14 +2,16 @@ import json
 
 class RemoEncounterData:
     def __init__(self):
+        self.name = None
         self.entity_id = None
         self.entity_type = None
         self.distance_to_entity = 0.0
         
     def to_dictionary(self):
         return {
+            "name" : self.name,
             "entity_id" : self.entity_id,
-            "entity_type" : self.entity_type,
+            "entity_type" : str(self.entity_type),
             "distance_to_entity" : self.distance_to_entity
         }
 
@@ -66,7 +68,7 @@ class RemoMetadataReader:
                 for item in v:
                     encounter = RemoEncounterData()
                     encounter.entity_id = int(item['entity_id'])
-                    encounter.entity_type = int(item['entity_type'])
+                    encounter.entity_type = str(item['entity_type'])
                     encounter.distance_to_entity = float(item['distance_to_entity'])
                     metadata.encounters[int(k)].append(encounter)
             return metadata

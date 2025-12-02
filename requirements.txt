@@ -1,5 +1,31 @@
+# REMO specific
 simple-watchdog-timer
 carla
 customtkinter
 pytest
 setuptools==68.0
+
+# Carla required
+future
+numpy; python_version < '3.0'
+numpy==1.18.4; python_version >= '3.0'
+pygame
+matplotlib
+open3d
+Pillow
+
+# Scenario runner required
+py-trees==0.8.3
+numpy==1.18.4; python_version >= '3.0'
+networkx==2.2
+Shapely==1.7.1
+psutil
+xmlschema==1.0.18
+ephem
+tabulate
+opencv-python==4.2.0.32
+matplotlib
+six
+simple-watchdog-timer
+antlr4-python3-runtime==4.10
+graphviz

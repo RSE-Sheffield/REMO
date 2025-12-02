@@ -8,7 +8,6 @@ remoAPI = RemoAPI()
 
 # Connect to the server
 remoAPI.connect_to_server()
-#remoAPI.configure_server()
 
 # Prepare the initial scenario
 scenario_config = RemoScenarioConfiguration()
@@ -29,7 +28,7 @@ remoAPI.load_replay("default-metadata-path.json")
 
 # Make some changes
 remoAPI.set_dry()
-remoAPI.remove_hero()
+remoAPI.replace_hero()
 
 # Spawn the new ego vehicle here
 remoAPI.load_manual_control()
