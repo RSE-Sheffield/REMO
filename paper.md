@@ -39,6 +39,13 @@ While simulation-based testing is a standard practice, the lack of deterministic
 
 ## Repository and Installation
 
+### Prequisites
+The tool requires Python 3.8 and Carla version 0.9.15
+
+### Source code
+The source code for the tool is available on github at the following address: [https://github.com/RSE-Sheffield/REMO](https://github.com/RSE-Sheffield/REMO)
+
+Associated installation instructions are available in the [README.md](https://github.com/RSE-Sheffield/REMO/blob/main/README.md) file in the repository.
 
 
 
