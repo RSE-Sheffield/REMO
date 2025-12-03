@@ -78,6 +78,8 @@ where `EXAMPLE_NAME` is one of the following:
 - `nearby_objects.py` Querying a set of environment objects within a given radius of a given location, and then filtering that set to only include those of type "Poles"
 - `api_example_run_scenario.py` Launching a scenario, using manual control to control the ego vehicle. The scenario is recorded for 20 seconds, after which the metadata is written to the default location. The metadata and replay file are then reloaded, with the ego vehicle replaced by a new one which is independently controlled.
 - `play_replay.py` Launching a replay with modified ego vehicle without first immediately recording the scenario. N.B. you must run the `api_example_run_scenario.py` example before running this one, or there will be no replay metadata to load.
+- `verify_stable_ids.py` Verifies that object ids are consistent across multiple replays of a scenario
+- `remove_fences.py` Shows how to remove objects of a certain type within a given radius of the ego vehicle
 
 ### GUI
 TODO

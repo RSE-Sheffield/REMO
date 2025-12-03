@@ -28,7 +28,7 @@ remoAPI.load_replay("default-metadata-path.json")
 
 # Make some changes
 remoAPI.set_dry()
-remoAPI.replace_hero()
+remoAPI.replace_ego_vehicle()
 
 # Spawn the new ego vehicle here
 remoAPI.load_manual_control()

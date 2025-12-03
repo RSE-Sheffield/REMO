@@ -16,6 +16,6 @@ for object in objects:
     
 # Only get poles
 print("Only poles:")
-poles = remoAPI.filter_objects(objects, "Poles")
+poles = remoAPI.filter_objects_by_type(objects, "Poles")
 for object in poles:
     print(str(object.id) + ", " + str(object.type))
