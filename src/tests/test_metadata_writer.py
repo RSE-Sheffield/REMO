@@ -40,7 +40,8 @@ def test_remo_metadata_to_dictionary():
             0 : [{
                 "entity_id": 23,
                 "entity_type": "default",
-                "distance_to_entity": 24.0
+                "distance_to_entity": 24.0,
+                "name": None
             }]
         }
     }
