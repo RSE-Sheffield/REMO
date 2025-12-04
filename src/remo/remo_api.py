@@ -6,7 +6,6 @@ import carla
 
 import remo.carla_helpers.server
 from remo.remo_metadata import RemoMetadata, RemoMetadataWriter, RemoEncounterData, RemoMetadataReader
-from remo.remo_scenario_config import RemoScenarioConfiguration
 import subprocess
 import time
 
@@ -23,12 +22,12 @@ class RemoAPI:
         self.poll_frequency = 1.0
         self.poll_step = 0
         self.scenario_runner_root = os.environ.get("REMO_SCENARIO_RUNNER_ROOT")
-        
+
     # Connects to the carla server
     def connect_to_server(self):
         self.client = remo.carla_helpers.server.connect_to_carla_server()
         self.world = self.client.get_world()
-        
+
     def configure_server(self, dt=0.05, traffic_manager_port=8000, rng_seed=57):
         print("Setting deterministic mode")
         deterministic_settings = self.world.get_settings()
@@ -36,7 +35,7 @@ class RemoAPI:
         deterministic_settings.fixed_delta_seconds = dt
         self.world.apply_settings(deterministic_settings)
         self.client.reload_world(False)
-        
+
         traffic_manager = self.client.get_trafficmanager(traffic_manager_port)
         traffic_manager.set_synchronous_mode(True)
         traffic_manager.set_random_device_seed(rng_seed) # define TM seed for determinism
@@ -65,18 +64,18 @@ class RemoAPI:
             self.metadata.replay_file = recording_config.replay_file
             self.client.start_recorder(self.metadata.replay_file)
             runtime = recording_config.recording_time
-        
+
         # Run the scenario until end conditions are met
         start_time = time.time()
         last_time = start_time
         total_elapsed_time = 0.0
         time_since_last_poll = 0.0
         poll_period = 1.0 / self.poll_frequency
-        
+
         while(total_elapsed_time < runtime):
             time_now = time.time()
             dt = time_now - last_time
-            
+
             time_since_last_poll += dt
             if (time_since_last_poll > poll_period):
                 self.on_poll_tick()
@@ -90,7 +89,7 @@ class RemoAPI:
         if recording_config is not None:
             print("Stopping recording")
             self.client.stop_recorder()
-        
+
             # If we are recording, write the metadata file
             print("Writing metadata")
             metadata_writer = RemoMetadataWriter(self.metadata, recording_config.metadata_filepath)
@@ -127,7 +126,7 @@ class RemoAPI:
         self.client.set_replayer_ignore_hero(False)
         self.client.set_replayer_ignore_spectator(False)
         self.client.replay_file(self.metadata.replay_file, 0, 20, self.metadata.ego_id)        
-        
+
     def play_replay(self):
         self.main_loop()
 
@@ -146,10 +145,10 @@ class RemoAPI:
                         self.metadata.ego_id = self.active_ego_id
         print(self.world.get_actor(self.metadata.ego_id))
         return self.world.get_actor(self.metadata.ego_id)
-    
+
     def get_ego_vehicle_location(self):
         return self.get_ego_vehicle().get_location()
-    
+
     def replace_ego_vehicle(self):
         transform = self.get_ego_vehicle().get_transform()
         self.get_ego_vehicle().set_location(carla.Location(10000, 10000, 10000))
@@ -175,7 +174,7 @@ class RemoAPI:
 
     def enable_environment_objects(self, ids):
         self.world.enable_environment_objects(ids, True)
-        
+
     def disable_environment_object(self, id):
         self.world.disable_environment_objects([id])
 
@@ -235,7 +234,7 @@ class RemoAPI:
 
     def add_label(self, location, text):
         self.world.debug.draw_string(location, text, life_time=200)
-        
+
     def get_objects_within_radius(self, location, radius):
         actors = [actor for actor in self.get_actors() if location.distance(actor.get_location()) <= radius]
         env_objects = [obj for obj in self.get_environment_objects() if location.distance(obj.transform.location) <= radius]
@@ -249,7 +248,6 @@ class RemoAPI:
 
         for obj in env_objects:
             self.add_label(obj.bounding_box.location, "Environment Object: " + str(obj.id))
-            
+
     def filter_objects_by_type(self, objects, obj_type):
         return [obj for obj in objects if str(obj.type) == obj_type]
-            

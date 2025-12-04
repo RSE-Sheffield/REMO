@@ -1,8 +1,4 @@
 
-import time
-from remo.remo_api import RemoAPI
-from remo.remo_scenario_config import RemoScenarioConfiguration
-from remo.remo_recording_config import RemoRecordingConfig
 from remo.remo_metadata import *
 
 def test_encounterdata_to_dictionary():
@@ -12,9 +8,10 @@ def test_encounterdata_to_dictionary():
     data.distance_to_entity = 24.0
 
     expected_output = {
-        "entity_id" : 23,
-        "entity_type" : "default",
-        "distance_to_entity" : 24.0
+        "entity_id": 23,
+        "entity_type": "default",
+        "distance_to_entity": 24.0,
+        "name": None
     }
     
     assert data.to_dictionary() == expected_output
@@ -35,15 +32,15 @@ def test_remo_metadata_to_dictionary():
     }
     
     expected_output = {
-        "scenario_file" : "default_scenario_file.json",
-        "ego_id" : 4,
-        "ads_name" : "test_ads",
-        "replay_file" : "replay_file.json",
-        "encounters" : {
+        "scenario_file": "default_scenario_file.json",
+        "ego_id": 4,
+        "ads_name": "test_ads",
+        "replay_file": "replay_file.json",
+        "encounters": {
             0 : [{
-                "entity_id" : 23,
-                "entity_type" : "default",
-                "distance_to_entity" : 24.0
+                "entity_id": 23,
+                "entity_type": "default",
+                "distance_to_entity": 24.0
             }]
         }
     }

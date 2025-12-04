@@ -15,4 +15,3 @@ remoAPI.replace_ego_vehicle()
 
 # Spawn the new ego vehicle here
 remoAPI.load_manual_control()
-

@@ -9,10 +9,10 @@ class RemoEncounterData:
         
     def to_dictionary(self):
         return {
-            "name" : self.name,
-            "entity_id" : self.entity_id,
-            "entity_type" : str(self.entity_type),
-            "distance_to_entity" : self.distance_to_entity
+            "name": self.name,
+            "entity_id": self.entity_id,
+            "entity_type": str(self.entity_type),
+            "distance_to_entity": self.distance_to_entity
         }
 
 class RemoMetadata:
@@ -25,11 +25,11 @@ class RemoMetadata:
 
     def to_dictionary(self):
         as_dictionary = {
-            "scenario_file" : self.scenario_file,
-            "ego_id" : self.ego_id,
-            "ads_name" : self.ads_name,
-            "replay_file" : self.replay_file,
-            "encounters" : self.encounters_to_map()
+            "scenario_file": self.scenario_file,
+            "ego_id": self.ego_id,
+            "ads_name": self.ads_name,
+            "replay_file": self.replay_file,
+            "encounters": self.encounters_to_map()
         }
         return as_dictionary
     
@@ -74,4 +74,3 @@ class RemoMetadataReader:
             return metadata
 
         raise RuntimeError("Failed to read metadata file")
-        
