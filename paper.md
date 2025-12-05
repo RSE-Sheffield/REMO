@@ -67,13 +67,8 @@ This work was supported by the Institute of Information & Communications Technol
 
 
 ## References
-> [1] P. Kaur, S. Taghavi, Z. Tian and W. Shi, "A Survey on Simulators for Testing Self-Driving Cars," 2021 Fourth International Conference on Connected and Autonomous Driving (MetroCAD), Detroit, MI, USA, 2021, pp. 62-70, doi: 10.1109/MetroCAD51599.2021.00018. 
 
-> [2] Ai, Yan, et al. Reproduction of Real-World Scenarios in CARLA: An Extension of CARLA Functionality. No. 2025-01-8059. SAE Technical Paper, 2025.
 
-> [3] Arcaini, Paolo, Xiao-Yi Zhang, and Fuyuki Ishikawa. "Less is more: Simplification of test scenarios for autonomous driving system testing." 2022 IEEE Conference on Software Testing, Verification and Validation (ICST). IEEE Computer Society, 2022.
-
-> [4] Shin, Donghwan, and Sanjeetha Pennada. "Towards simplification of failure scenarios for machine learning-enabled autonomous systems." 2024 IEEE 24th International Conference on Software Quality, Reliability, and Security Companion (QRS-C). IEEE, 2024.
 
 
 
