@@ -1,57 +1,69 @@
-# REMO: A Tool for Replaying with Modifications for Scenario-Based Testing in Autonomous Driving Systems
-
-
-**Matthew I Leach** [![ORCID iD](https://img.shields.io/badge/-green?logo=orcid&logoColor=white)](https://orcid.org/0000-0002-8901-5609) $^{1¶}$,
-**Sanjeetha Pennada** [![ORCID iD](https://img.shields.io/badge/-green?logo=orcid&logoColor=white)](https://orcid.org/0000-0003-4650-862X) $^1$, **and**
-**Donghwan Shin** [![ORCID iD](https://img.shields.io/badge/-green?logo=orcid&logoColor=white)](https://orcid.org/0000-0002-0840-6449) $^1$  
-
-
-**1** School of Computer Science, University of Sheffield, Sheffield **¶** Corresponding author  
+---
+title: 'REMO: Deterministic Scenario Replay and Modification for ADS Debugging in CARLA'
+tags:
+  - Python
+  - autonomous vehicles
+  - simulation-based testing
+authors:
+  - name: Matthew I Leach
+    orcid: 0000-0002-8901-5609
+    affiliation: 1
+  - name: Sanjeetha Pennada
+    orcid: 0000-0003-4650-862X
+    affiliation: 1
+  - name: Donghwan Shin
+    orcid: 0000-0002-0840-6449
+    corresponding: true
+    affiliation: 1
+affiliations:
+ - name: School of Computer Science, University of Sheffield, United Kingdom
+   index: 1
+date: 00 December 2025
+bibliography: paper.bib
+---
 
 
 ## Summary
-Reproducing autonomous driving scenarios with deterministic behaviour is a significant challenge in the field of autonomous vehicle (AV) research. While current simulation platforms like CARLA offer high-fidelity environments, they often fall short in providing user-friendly interfaces for recording, modifying, and deterministically replaying scenarios which is essential for testing different Autonomous Driving Systems (ADS) under uniform conditions. The manual adjustment of factors such as weather and time conditions, street lights, buildings and the behaviour of non-player characters (NPCs) frequently results in inconsistencies that hinder reproducibility and fair benchmarking. 
+In simulation-based testing of autonomous driving systems (ADS), the ability to reproducibly recreate and modify driving scenarios is crucial for testing and debugging system performance. 
+For example, when an ADS fails to navigate a complex urban driving scenario, researchers and engineers need to isolate the contributing factors by systematically modifying scenario elements, such as weather conditions, time of day, street lights, traffic signs, or the presence of other vehicles and pedestrians. 
+However, existing simulation platforms like CARLA [@CARLA2017] often lack the capability to deterministically replay scenarios with modified parameters while maintaining consistent non-player character (NPC) behaviour. 
 
-The tool REMO (Replay with Modifications) is designed to allow the deterministic replay of simulation scenarios and modification of various scenario entities such as weather conditions, number of NPCs, street lights, and time of day, as well as structural components like buildings. REMO tests the behaviour of ego vehicle driven by ADS while maintaining deterministic NPC behaviour. This functionality provides a reliable, adaptable, and ADS-agnostic testing framework for evaluating autonomous driving systems.  
+To address this limitation, we present `REMO`, a tool that enables deterministic replay and modification of simulation scenarios within CARLA. 
+`REMO` provides the following key features:
+* **Deterministic Scenario Replay**: `REMO` allows users to record and replay any driving scenarios in CARLA while ensuring that all static and dynamic elements, including NPC behaviours, remain consistent across replays, unless intentionally modified.
+* **Scenario Modification**: Users can modify various scenario elements/parameters, including environmental conditions (e.g. weather, time of day) and the presence of specific actors (e.g. vehicles, pedestrians), without disrupting the deterministic nature of the replay.
+* **ADS-Agnostic Testing**: `REMO` supports scenario replay with or without an ego vehicle (i.e. the autonomous vehicle under test), enabling researchers to test different ADS models under identical NPC conditions for fair comparisons.
+By enabling deterministic replay and flexible scenario modification, `REMO` facilitates systematic debugging and evaluation of autonomous driving systems.
+
 
 ## Statement of Need
-Recent work has recognised the importance of scenario simplification for understanding failures in machine learning–enabled autonomous systems. (Arcaini et al., 2022) proposed iterative removal of traffic participants to isolate the minimal set of elements responsible for triggering a failure, showing that simplified scenarios significantly aid engineers during debugging. Similarly, (Shin et al., 2024) highlighted the need for automated failure scenario simplification and outline challenges such as combinatorial explosion, non-linear ML behaviour, and the high cost of repeated simulations, motivating surrogate-assisted and search-based strategies to reduce scenario complexity while preserving the triggering failure. While these studies demonstrate that simplification enhances explainability and debugging, they primarily operate on already executed scenarios and do not provide deterministic replay, or modification of entities inside the simulator. Moreover, despite growing interest in scenario generation and scenario minimisation, very little research addresses the broader problem of ADS debugging itself, particularly the need to reliably reconstruct, modify, and compare failure-inducing scenarios across different ADSs.
+Debugging failures in machine learning–enabled autonomous driving systems (ADS) is a complex task that requires the ability to reproducibly recreate and modify driving scenarios [@10726945].
+For example, @9787893 proposed iterative removal of NPC vehicles to isolate the minimal set of NPCs responsible for triggering a failure, showing that simplified scenarios significantly aid engineers during debugging. 
+However, they focused on NPC removal and did not address the broader need for deterministic scenario replay and modification of other scenario elements (e.g. weather, time of day, buildings).
+Furthermore, due to the inherent non-determinism of simulation platforms [@11052713; @9793395], simply re-running a scenario without explicitly recording and replaying it can lead to different outcomes, making it difficult to isolate failure causes.
+Although CARLA supports record and replay functionality, it lacks the ability to modify scenarios while maintaining deterministic NPC behaviour.
 
-ADS are developed and evaluated in simulation environments such as CARLA, LGSVL (Kaur et al., 2021), where diverse traffic scenarios, environmental settings, and weather conditions can be recreated safely. Therefore, a persistent challenge in this field is reproducibility i.e., the ability to run identical scenarios with deterministic non-player character (NPC) behaviours, traffic dynamics, and environmental conditions. When testing different ADS models on the same scenario, even minor variations in NPC behaviour or timing can lead to different outcomes, making it difficult to perform fair comparisons or conduct systematic debugging of autonomous driving failures.
-
-CARLA allows both manual control and Traffic Manager control. However, the current versions of CARLA only allows specifying start and destination points for vehicles managed by the Traffic Manager, and does not provide the ability to replay or modify scenarios (Ai et al., 2025). They lack an interactive graphical interface for editing recorded scenarios, and modifications (such as weather, time of day, or removal of specific entities) often disrupt deterministic replay. Moreover, the inability to replay scenarios without the ego vehicle prevents researchers from isolating NPC behaviour and testing multiple ADS controllers under identical external conditions. This gap limits the ability of researchers to perform ADS-agnostic testing and to study how different systems respond to the same real-world failures.
-
-REMO addresses these limitations by introducing a deterministic scenario replay tool that enables users to record, replay, and modify complex simulation scenarios directly within CARLA. Unlike traditional record-replay methods, REMO ensures deterministic NPC behaviour while allowing selective modification of scenario parameters such as weather, lighting, buildings, and time of the day. It also supports scenario replay, enabling independent testing of ego vehicle driven by different ADSs (e.g., TransFuser++) in identical conditions.
-
-This combination of determinism, and configurability makes REMO a unique and valuable tool for the autonomous driving research community. REMO bridges the gap between realistic scenario generation and reproducible experimentation, establishing a robust foundation for debugging and validating machine learning–enabled driving systems. Its capabilities extend beyond scenario simplification research, addressing broader needs in ADS debugging, such as isolating faulty perception inputs, exploring alternative ADS responses, and testing multiple ADSs within the same scenario.
+`REMO` is designed to fill this gap by providing a tool that enables deterministic replay of recorded scenarios with the ability to modify various scenario parameters without affecting NPC behaviour.
+It allows users to systematically explore how different factors contribute to ADS failures by enabling controlled modifications of the simulation environment.
+It also supports ADS-agnostic testing by allowing scenario replay without an ego vehicle, facilitating fair comparisons between different ADS models under identical conditions.
 
 
-## State of Field
-Despite CARLA’s widespread adoption as an open-source simulation platform for autonomous driving research, it still lacks several essential features needed for reproducible experimentation, systematic debugging, and ADS-agnostic evaluation. CARLA cannot deterministically replay previously executed scenarios, as its Traffic Manager controls NPCs stochastically, causing different outcomes even with identical initialisations. Modifying scenarios, such as removing actors, adjusting weather, or changing the environment, often breaks determinism and causes unpredictable NPC behaviors. Furthermore, CARLA cannot modify or replay complex scenarios, and does not support scenario replay without an ego vehicle, which prevents testing multiple ADS models under identical NPC conditions. 
+## Overview of the Tool
+Figure \autoref{fig:architecture} illustrates the overall architecture of `REMO`.
+(More to be added later; please mention key components that enable the features described above. This can also be added to the repository README later.)
 
-While simulation-based testing is a standard practice, the lack of deterministic record-replay mechanisms, consistent NPC behavior, and flexible scenario modification tools undermines efforts to isolate failure cases, validate scenario simplifications, and support ADS-agnostic evaluation. As the field advances in scenario complexity and generation algorithms, there remains a critical gap in tools that enable robust, repeatable scenario editing and replay. This gap directly motivates the development of REMO. REMO directly addresses these limitations by providing deterministic scenario replay and flexible modification of scenario entities, which are absent in standard CARLA. The following are key contributions of REMO:
-
-* Enables users to record, replay, and edit complex simulation scenarios while maintaining deterministic NPC behavior.
-* Supports scenario replay with or without an ego vehicle, facilitating direct, ADS-agnostic comparisons under identical conditions.
-* Integrates scenario editing into a user-friendly workflow, allowing easy removal or addition of actors and adjustment of environmental entities.
+![Overall Architecture of `REMO`\label{fig:architecture}](REMO.png)
 
 
 
 ## Repository and Installation
 
-### Prequisites
-The tool requires Python 3.8 and Carla version 0.9.15
-
-### Source code
-The source code for the tool is available on github at the following address: [https://github.com/RSE-Sheffield/REMO](https://github.com/RSE-Sheffield/REMO)
-
-Associated installation instructions are available in the [README.md](https://github.com/RSE-Sheffield/REMO/blob/main/README.md) file in the repository.
-
-
-
+The tool requires Python 3.8 and Carla version 0.9.15. 
+The source code of `REMO`, including detailed installation instructions and example scripts, is hosted on GitHub: [https://github.com/RSE-Sheffield/REMO](https://github.com/RSE-Sheffield/REMO).
 
 
 ## Acknowledgements
+This work was supported by the Institute of Information & Communications Technology Planning & Evaluation(IITP) grant funded by the Korea government(MSIT) (No. RS-2025-02218761, 50%) and by the Engineering and Physical Sciences Research Council (EPSRC) [EP/Y014219/1].
 
 
 ## References
