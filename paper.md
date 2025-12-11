@@ -30,9 +30,9 @@ However, existing simulation platforms like CARLA [@CARLA2017] often lack the ca
 
 To address this limitation, we present `REMO`, a tool that enables deterministic replay and modification of simulation scenarios within CARLA. 
 `REMO` provides the following key features:
-* **Deterministic Scenario Replay**: `REMO` allows users to record and replay any driving scenarios in CARLA while ensuring that all static and dynamic elements, including NPC behaviours, remain consistent across replays, unless intentionally modified.
-* **Scenario Modification**: Users can modify various scenario elements/parameters, including environmental conditions (e.g. weather, time of day) and the presence of specific actors (e.g. vehicles, pedestrians), without disrupting the deterministic nature of the replay.
-* **ADS-Agnostic Testing**: `REMO` supports scenario replay with or without an ego vehicle (i.e. the autonomous vehicle under test), enabling researchers to test different ADS models under identical NPC conditions for fair comparisons.
+- **Deterministic Scenario Replay**: `REMO` allows users to record and replay any driving scenarios in CARLA while ensuring that all static and dynamic elements, including NPC behaviours, remain consistent across replays, unless intentionally modified.
+- **Scenario Modification**: Users can modify various scenario elements/parameters, including environmental conditions (e.g. weather, time of day) and the presence of specific actors (e.g. vehicles, pedestrians), without disrupting the deterministic nature of the replay.
+- **ADS-Agnostic Testing**: `REMO` supports scenario replay with or without an ego vehicle (i.e. the autonomous vehicle under test), enabling researchers to test different ADS models under identical NPC conditions for fair comparisons.
 By enabling deterministic replay and flexible scenario modification, `REMO` facilitates systematic debugging and evaluation of autonomous driving systems.
 
 
@@ -49,7 +49,7 @@ It also supports ADS-agnostic testing by allowing scenario replay without an ego
 
 
 ## Overview of the Tool
-Figure \autoref{fig:architecture} illustrates the overall architecture of `REMO`.
+\autoref{fig:architecture} illustrates the overall architecture of `REMO`.
 (More to be added later; please mention key components that enable the features described above. This can also be added to the repository README later.)
 
 ![Overall Architecture of `REMO`\label{fig:architecture}](REMO.png)
@@ -67,6 +67,7 @@ This work was supported by the Institute of Information & Communications Technol
 
 
 ## References
+
 
 
 
