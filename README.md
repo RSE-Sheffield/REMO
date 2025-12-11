@@ -1,4 +1,4 @@
-# REMO - Replay with Modification
+# REMO: Deterministic Scenario Record and Replay with Modification for ADS Debugging in CARLA
 
 ## Prerequisites
 - Carla 0.9.15
