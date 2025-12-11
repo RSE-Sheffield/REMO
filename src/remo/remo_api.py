@@ -21,15 +21,18 @@ class RemoAPI:
         self.metadata = RemoMetadata()
         self.poll_frequency = 1.0
         self.poll_step = 0
+        self.dt = 0.05
         self.scenario_runner_root = os.environ.get("REMO_SCENARIO_RUNNER_ROOT")
 
     # Connects to the carla server
     def connect_to_server(self):
         self.client = remo.carla_helpers.server.connect_to_carla_server()
         self.world = self.client.get_world()
+        self.configure_server()
 
     def configure_server(self, dt=0.05, traffic_manager_port=8000, rng_seed=57):
         print("Setting deterministic mode")
+        self.dt = dt
         deterministic_settings = self.world.get_settings()
         deterministic_settings.synchronous_mode = True
         deterministic_settings.fixed_delta_seconds = dt
@@ -56,6 +59,7 @@ class RemoAPI:
     def load_manual_control(self):
         print("Starting manual control")
         subprocess.Popen(["python3", self.scenario_runner_root + "/manual_control.py"], cwd=self.scenario_runner_root)
+        print("Manual control started")
 
     # Runs the active scenario and starts recording if a recording configuration is supplied
     def run_active_scenario(self, recording_config=None):
@@ -65,28 +69,25 @@ class RemoAPI:
         if recording_config is not None:
             print("Starting recording")
             self.metadata.replay_file = recording_config.replay_file
-            self.client.start_recorder(self.metadata.replay_file)
             runtime = recording_config.recording_time
+            if recording_config.record_on_play:
+                self.client.start_recorder(self.metadata.replay_file)
 
         # Run the scenario until end conditions are met
-        start_time = time.time()
-        last_time = start_time
         total_elapsed_time = 0.0
         time_since_last_poll = 0.0
         poll_period = 1.0 / self.poll_frequency
 
         while total_elapsed_time < runtime:
-            time_now = time.time()
-            dt = time_now - last_time
 
-            time_since_last_poll += dt
+            time_since_last_poll += self.dt
             if time_since_last_poll > poll_period:
                 self.on_poll_tick()
                 time_since_last_poll -= poll_period
                 self.poll_step += 1
 
-            total_elapsed_time += dt
-            last_time = time_now
+            total_elapsed_time += self.dt
+            self.world.tick()
 
         # Stop recording if we started it
         if recording_config is not None:
@@ -132,6 +133,12 @@ class RemoAPI:
 
     def play_replay(self):
         self.main_loop()
+        
+    def pause(self):
+        self.is_running = False
+        
+    def play(self):
+        self.is_running = True
 
     def main_loop(self):
         while self.is_running:

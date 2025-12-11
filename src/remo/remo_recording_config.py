@@ -5,3 +5,4 @@ class RemoRecordingConfig:
         self.metadata_filepath = "default-metadata-path.json"
         self.replay_file = "default-replay-file.log"
         self.recording_time = 20.0
+        self.record_on_play = True

@@ -8,6 +8,7 @@ remoAPI = RemoAPI()
 
 # Connect to the server
 remoAPI.connect_to_server()
+remoAPI.configure_server()
 
 # Prepare the initial scenario
 scenario_config = RemoScenarioConfiguration()
