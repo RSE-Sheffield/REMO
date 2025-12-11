@@ -39,13 +39,16 @@ class RemoAPI:
         traffic_manager = self.client.get_trafficmanager(traffic_manager_port)
         traffic_manager.set_synchronous_mode(True)
         traffic_manager.set_random_device_seed(rng_seed) # define TM seed for determinism
+        
+    def add_traffic(self, num_vehicles):
+        subprocess.Popen(["python3", os.environ.get("REMO_CARLA_SERVER_ROOT") + "/PythonAPI/examples/generate_traffic.py", "-n", str(num_vehicles)])
 
     # Interfaces with the carla server to prepare the correct environment and load the ads
     def load_scenario(self, scenario_config):
         print("Loading scenario " + str(scenario_config.scenario_file))
         self.metadata.scenario_file = scenario_config.scenario_file
         subprocess.Popen(["python3", "scenario_runner.py", "--scenario", self.metadata.scenario_file, "--reloadWorld"], cwd=self.scenario_runner_root)
-        
+
         if scenario_config.ads == "manual":
             time.sleep(3.0)
             self.load_manual_control()
@@ -53,7 +56,7 @@ class RemoAPI:
     def load_manual_control(self):
         print("Starting manual control")
         subprocess.Popen(["python3", self.scenario_runner_root + "/manual_control.py"], cwd=self.scenario_runner_root)
-        
+
     # Runs the active scenario and starts recording if a recording configuration is supplied
     def run_active_scenario(self, recording_config=None):
         print("Starting scenario")
@@ -72,12 +75,12 @@ class RemoAPI:
         time_since_last_poll = 0.0
         poll_period = 1.0 / self.poll_frequency
 
-        while(total_elapsed_time < runtime):
+        while total_elapsed_time < runtime:
             time_now = time.time()
             dt = time_now - last_time
 
             time_since_last_poll += dt
-            if (time_since_last_poll > poll_period):
+            if time_since_last_poll > poll_period:
                 self.on_poll_tick()
                 time_since_last_poll -= poll_period
                 self.poll_step += 1
@@ -99,7 +102,7 @@ class RemoAPI:
         hero_location = self.get_ego_vehicle_location()
         actors, env_objects = self.get_objects_within_radius(self.get_ego_vehicle_location(), 10.0)
         for obj in env_objects:
-            encounter = RemoEncounterData()            
+            encounter = RemoEncounterData()
             encounter.name = obj.name
             encounter.entity_id = obj.id
             encounter.entity_type = str(obj.type)
@@ -108,7 +111,7 @@ class RemoAPI:
                 self.metadata.encounters[self.poll_step] = []
             self.metadata.encounters[self.poll_step].append(encounter)
         for obj in actors:
-            encounter = RemoEncounterData()            
+            encounter = RemoEncounterData()
             encounter.entity_id = obj.id
             encounter.entity_type = obj.type_id
             encounter.distance_to_entity = hero_location.distance(obj.get_location())
@@ -125,7 +128,7 @@ class RemoAPI:
         print("Loading replay file", self.metadata.replay_file)
         self.client.set_replayer_ignore_hero(False)
         self.client.set_replayer_ignore_spectator(False)
-        self.client.replay_file(self.metadata.replay_file, 0, 20, self.metadata.ego_id)        
+        self.client.replay_file(self.metadata.replay_file, 0, 20, self.metadata.ego_id)
 
     def play_replay(self):
         self.main_loop()
