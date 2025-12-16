@@ -53,7 +53,7 @@ It also supports ADS-agnostic testing by allowing scenario replay without an ego
 \autoref{fig:architecture} illustrates the overall architecture of `REMO`.
 (More to be added later; please mention key components that enable the features described above. This can also be added to the repository README later.)
 
-![Overall Architecture of `REMO`\label{fig:architecture}](REMO.png)
+![Overall Architecture of `REMO`\label{fig:architecture}](remo-overview.png)
 
 
 
