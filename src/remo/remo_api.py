@@ -3,11 +3,12 @@
 import os
 import random
 import carla
+import subprocess
+import time
 
 import remo.carla_helpers.server
 from remo.remo_metadata import RemoMetadata, RemoMetadataWriter, RemoEncounterData, RemoMetadataReader
-import subprocess
-import time
+from remo.cawsr.json_to_xml_files import *
 
 class RemoAPI:
     """ User interface for interacting with REMO """
@@ -22,7 +23,7 @@ class RemoAPI:
         self.poll_frequency = 1.0
         self.poll_step = 0
         self.dt = 0.05
-        self.scenario_runner_root = os.environ.get("REMO_SCENARIO_RUNNER_ROOT")
+        self.scenario_runner_root = os.environ.get("SCENARIO_RUNNER_ROOT")
 
     # Connects to the carla server
     def connect_to_server(self):
@@ -49,8 +50,28 @@ class RemoAPI:
     # Interfaces with the carla server to prepare the correct environment and load the ads
     def load_scenario(self, scenario_config):
         print("Loading scenario " + str(scenario_config.scenario_file))
+        
+        run_args = [
+            "python3", 
+            "scenario_runner.py", 
+            "--reloadWorld"]
+        
+        # Handle json format via CAWSR converter
+        if ".json" in scenario_config.scenario_file:
+            if not os.path.isdir("temp"):
+                os.makedirs("temp")
+            converter = XMLToFiles()
+            converter.parse_scenario(scenario_config.scenario_file, "temp")
+            run_args.append("--route")
+            run_args.append("temp/route.xml")
+            run_args.append("temp/scenario.xml") 
+        else:
+            run_args.append("--scenario")
+            run_args.append(scenario_config.scenario_file)
+
+
         self.metadata.scenario_file = scenario_config.scenario_file
-        subprocess.Popen(["python3", "scenario_runner.py", "--scenario", self.metadata.scenario_file, "--reloadWorld"], cwd=self.scenario_runner_root)
+        subprocess.Popen(run_args, cwd=self.scenario_runner_root)
 
         if scenario_config.ads == "manual":
             time.sleep(3.0)
