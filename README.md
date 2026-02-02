@@ -81,6 +81,15 @@ where `EXAMPLE_NAME` is one of the following:
 - `verify_stable_ids.py` Verifies that object ids are consistent across multiple replays of a scenario
 - `remove_fences.py` Shows how to remove objects of a certain type within a given radius of the ego vehicle
 
-### GUI
-TODO
+### Transfuser++ ADS
 
+1. Clone the [Transfuser++](https://github.com/autonomousvision/transfuser) repository
+2. Download the pre-trained agents:
+
+        mkdir model_ckpt
+        wget https://s3.eu-central-1.amazonaws.com/avg-projects/transfuser/models_2022.zip -P model_ckpt
+        unzip model_ckpt/models_2022.zip -d model_ckpt/
+        rm model_ckpt/models_2022.zip
+3. Test that this is set up correctly using the local leaderboard script `./leaderboard/scripts/local_evaluation.sh <carla root> <working directory of this repo (*/transfuser/)>
+`
+4. Use `"transfuser"` as the ads name in the ScenarioConfig object
