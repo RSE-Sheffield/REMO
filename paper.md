@@ -48,6 +48,12 @@ Although CARLA supports record and replay functionality, it lacks the ability to
 It allows users to systematically explore how different factors contribute to ADS failures by enabling controlled modifications of the simulation environment.
 It also supports ADS-agnostic testing by allowing scenario replay without an ego vehicle, facilitating fair comparisons between different ADS models under identical conditions.
 
+## Research Impact 
+REMO addresses a fundamental limitation in ADS: the lack of deterministic scenario replay and controlled scenario modification in CARLA-based testing workflows. It fills a critical gap between high-fidelity simulation and reproducible ADS evaluation by enabling the recording, deterministic replay, and modification of critical driving scenarios.
+
+By ensuring deterministicNPC behaviour while allowing controlled changes to environmental and structural entities, REMO substantially improves the reliability and fairness of ADS benchmarking and failure analysis. This capability enables researchers to isolate the root causes of failures, compare multiple ADS controllers under identical conditions, and study the effects of scenario simplification and environmental variation.
+
+Furthermore, REMO supports ADS-agnostic testing by decoupling scenario replay from the ego vehicle, allowing identical scenarios to be reused across different driving systems. REMO is an open-source tool built directly on top of CARLA that makes it easier for researchers to reproduce experiments, debug failures, and compare different autonomous driving systems in a consistent and reliable way.
 
 ## Overview of the Tool
 \autoref{fig:architecture} illustrates the overall architecture of `REMO`.
@@ -62,12 +68,16 @@ It also supports ADS-agnostic testing by allowing scenario replay without an ego
 The tool requires Python 3.8 and Carla version 0.9.15. 
 The source code of `REMO`, including detailed installation instructions and example scripts, is hosted on GitHub: [https://github.com/RSE-Sheffield/REMO](https://github.com/RSE-Sheffield/REMO).
 
+## AI Usage Disclosure
+No generative artificial intelligence tools were used in the creation of the software, documentation, or the writing of this paper.
+
 
 ## Acknowledgements
 This work was supported by the Institute of Information & Communications Technology Planning & Evaluation(IITP) grant funded by the Korea government(MSIT) (No. RS-2025-02218761, 50%) and by the Engineering and Physical Sciences Research Council (EPSRC) [EP/Y014219/1].
 
 
 ## References
+
 
 
 
