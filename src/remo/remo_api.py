@@ -1,13 +1,22 @@
 """ Defines the client-side REMO API object """
 
+import importlib
 import os
 import random
+import sys
 import carla
 
 import remo.carla_helpers.server
 from remo.remo_metadata import RemoMetadata, RemoMetadataWriter, RemoEncounterData, RemoMetadataReader
 import subprocess
 import time
+
+from leaderboard.scenarios.scenario_manager_local import ScenarioManager
+from leaderboard.scenarios.route_scenario_local import RouteScenario
+from leaderboard.envs.sensor_interface import SensorConfigurationInvalid
+from leaderboard.autoagents.agent_wrapper_local import  AgentWrapper, AgentError
+from leaderboard.utils.statistics_manager_local import StatisticsManager
+from leaderboard.utils.route_indexer import R
 
 class RemoAPI:
     """ User interface for interacting with REMO """
@@ -55,11 +64,55 @@ class RemoAPI:
         if scenario_config.ads == "manual":
             time.sleep(3.0)
             self.load_manual_control()
+            
+        if scenario_config.ads == "transfuser":
+            time.sleep(3.0)
+
 
     def load_manual_control(self):
         print("Starting manual control")
         subprocess.Popen(["python3", self.scenario_runner_root + "/manual_control.py"], cwd=self.scenario_runner_root)
         print("Manual control started")
+
+    def load_transfuser_control(self):
+        print("Starting transfuser control")
+        
+        # Load agent
+        module_name = os.path.basename(self.agent_name).split('.')[0]
+        sys.path.insert(0, os.path.dirname(self.agent_name))
+        self.module_agent = importlib.import_module(module_name)
+        
+                # Set up the user's agent, and the timer to avoid freezing the simulation
+        try:
+            agent_class_name = getattr(self.module_agent, 'get_entry_point')()
+            if int(os.environ['DATAGEN'])==1:
+                self.agent_instance = getattr(self.module_agent, agent_class_name)(self.agent_config, self.config.index)
+            else:
+                self.agent_instance = getattr(self.module_agent, agent_class_name)(self.args.agent_config)
+            self.config.agent = self.agent_instance
+
+            # Check and store the sensors
+            if not self.sensors:
+                self.sensors = self.agent_instance.sensors()
+                track = self.agent_instance.track
+
+                AgentWrapper.validate_sensor_configuration(self.sensors, track, self.args.track)
+
+
+        
+        except SensorConfigurationInvalid as e:
+            # The sensors are invalid -> set the ejecution to rejected and stop
+            print("The sensor's configuration used is invalid:")
+            print("{}\n".format(e))
+            sys.exit(-1)
+
+        except Exception as e:
+            # The agent setup has failed -> start the next route
+            print("\nCould not set up the required agent:")
+            print("{}\n".format(e))
+            return
+        
+
 
     # Runs the active scenario and starts recording if a recording configuration is supplied
     def run_active_scenario(self, recording_config=None):
