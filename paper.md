@@ -51,7 +51,7 @@ It also supports ADS-agnostic testing by allowing scenario replay without an ego
 ## Research Impact 
 REMO addresses a fundamental limitation in ADS: the lack of deterministic scenario replay and controlled scenario modification in CARLA-based testing workflows. It fills a critical gap between high-fidelity simulation and reproducible ADS evaluation by enabling the recording, deterministic replay, and modification of critical driving scenarios.
 
-By ensuring deterministicNPC behaviour while allowing controlled changes to environmental and structural entities, REMO substantially improves the reliability and fairness of ADS benchmarking and failure analysis. This capability enables researchers to isolate the root causes of failures, compare multiple ADS controllers under identical conditions, and study the effects of scenario simplification and environmental variation.
+By ensuring deterministic NPC behaviour while allowing controlled changes to environmental and structural entities, REMO substantially improves the reliability and fairness of ADS benchmarking and debugging of failure scenarios. This capability enables researchers to isolate the root causes of failures, compare multiple ADS controllers under identical conditions, and study the effects of environmental variation on scenario simplification.
 
 Furthermore, REMO supports ADS-agnostic testing by decoupling scenario replay from the ego vehicle, allowing identical scenarios to be reused across different driving systems. REMO is an open-source tool built directly on top of CARLA that makes it easier for researchers to reproduce experiments, debug failures, and compare different autonomous driving systems in a consistent and reliable way.
 
@@ -77,6 +77,7 @@ This work was supported by the Institute of Information & Communications Technol
 
 
 ## References
+
 
 
 
