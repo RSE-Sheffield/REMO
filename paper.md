@@ -54,7 +54,7 @@ REMO addresses a fundamental limitation in ADS: the lack of deterministic scenar
 The deterministic scenario replay, including NPC trajectories, with controlled changes to environmental and structural entities in REMO, improves the reliability and fairness of ADS benchmarking and debugging of failure scenarios. This capability enables researchers and developers to isolate the root causes of ADS failures, compare multiple ADS under identical conditions, and examine the effects of environmental variation on scenario simplification.
 
 ## Overview of the Tool
-\autoref{fig:architecture} illustrates the workflow of the tool, which supports the setup, scenario recording, and replay of autonomous driving scenarios with user-defined modifications in the CARLA simulator. The workflow is divided into three main phases: scenario setup, scenario recording, and replay with modification.
+\autoref{fig:architecture} illustrates the workflow of the tool, which is divided into three main phases: scenario setup, scenario recording, and replay with modification.
 
 - **Setup**: In the setup phase, users define a scenario using the configuration files, such as XML or JSON, optionally assisted by a graphical user interface. This scenario definition specifies the simulation environment, scenario entities, and the system under test. The REMO API uses this configuration to initialize the CARLA server by loading the simulation world, spawning the ego vehicle and other entities, configuring the ADS, and applying the specified environmental conditions. 
 
@@ -80,6 +80,7 @@ This work was supported by the Institute of Information & Communications Technol
 
 
 ## References
+
 
 
 
