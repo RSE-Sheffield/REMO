@@ -15,20 +15,20 @@ scenario_config.scenario_file = "/atlas/RSE/remo-alt/src/examples/example_scenar
 remoAPI.load_scenario(scenario_config)
 
 # Allow time for the scenario to load
-#time.sleep(5.0)
-#
+time.sleep(5.0)
+
 ## Prepare the recording config
-#recording_config = RemoRecordingConfig()
-#
+recording_config = RemoRecordingConfig()
+
 ## Run the scenario
-#remoAPI.run_active_scenario(recording_config)
-#
+remoAPI.run_active_scenario(recording_config)
+
 ## We could now load the replay file
-#remoAPI.load_replay("default-metadata-path.json")
-#
+remoAPI.load_replay("default-metadata-path.json")
+
 ## Make some changes
-#remoAPI.set_dry()
-#remoAPI.replace_ego_vehicle()
-#
+remoAPI.set_dry()
+remoAPI.replace_ego_vehicle()
+
 ## Spawn the new ego vehicle here
-#remoAPI.load_manual_control()
+remoAPI.load_manual_control()

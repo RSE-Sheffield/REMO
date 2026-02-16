@@ -93,3 +93,12 @@ where `EXAMPLE_NAME` is one of the following:
 3. Test that this is set up correctly using the local leaderboard script `./leaderboard/scripts/local_evaluation.sh <carla root> <working directory of this repo (*/transfuser/)>
 `
 4. Use `"transfuser"` as the ads name in the ScenarioConfig object
+
+### JSON Scenario Definitions
+Remo supports the use of JSON scenario definitions via the [CAWSR](https://github.com/Intelligent-Testing-Lab/cawsr) package. To use a JSON scenario definition, simply supply the path to a compatible JSON file when constructing the `ScenarioDefinition` object:
+
+    scenario_config = RemoScenarioConfiguration()
+    scenario_config.scenario_file = "/atlas/RSE/remo-alt/src/examples/example_scenario.json"
+    remoAPI.load_scenario(scenario_config)
+
+REMO will automatically make the necessary background calls to CAWSR to produce a ScenarioRunner compatible route file etc.
