@@ -102,3 +102,10 @@ Remo supports the use of JSON scenario definitions via the [CAWSR](https://githu
     remoAPI.load_scenario(scenario_config)
 
 REMO will automatically make the necessary background calls to CAWSR to produce a ScenarioRunner compatible route file etc.
+
+## Acknowledgements
+This implementation is based on code from several repositories. We sincerely thank the authors for their awesome work.
+- [Scenario Runner](https://github.com/carla-simulator/scenario_runner)
+- [Transfuser++](https://github.com/autonomousvision/transfuser)
+- [CAWSR: ScenarioRunner for CARLA with support for Autoware](https://github.com/Intelligent-Testing-Lab/cawsr)
+
