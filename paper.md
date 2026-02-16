@@ -54,16 +54,21 @@ REMO addresses a fundamental limitation in ADS: the lack of deterministic scenar
 The deterministic scenario replay, including NPC trajectories, with controlled changes to environmental and structural entities in REMO, improves the reliability and fairness of ADS benchmarking and debugging of failure scenarios. This capability enables researchers and developers to isolate the root causes of ADS failures, compare multiple ADS under identical conditions, and examine the effects of environmental variation on scenario simplification.
 
 ## Overview of the Tool
-\autoref{fig:architecture} illustrates the overall architecture of `REMO`.
-(More to be added later; please mention key components that enable the features described above. This can also be added to the repository README later.)
+\autoref{fig:architecture} illustrates the workflow of the tool, which supports the setup, scenario recording, and replay of autonomous driving scenarios with user-defined modifications in the CARLA simulator. The workflow is divided into three main phases: scenario setup, scenario recording, and replay with modification.
+
+- **Setup**: In the setup phase, users define a scenario using the configuration files, such as XML or JSON, optionally assisted by a graphical user interface. This scenario definition specifies the simulation environment, scenario entities, and the system under test. The REMO API uses this configuration to initialize the CARLA server by loading the simulation world, spawning the ego vehicle and other entities, configuring the ADS, and applying the specified environmental conditions. 
+
+- **Scenario Recording**: During the scenario recording phase, the REMO API controls the execution of the simulation and collects relevant state information from the CARLA server at each simulation step. The runtime information for all the entities is captured and stored along with static metadata describing the scenario configuration and the ADS under test. These recordings provide a complete description of the executed scenario, which can be reused for deterministic replay with or without modifications. 
+
+- **Replay with Modification**: In the replay with modification phase, previously recorded scenarios can be loaded using stored metadata and replayed deterministically with user-defined modifications. These modifications may include, but are not limited to, changing weather or time conditions, removing NPCs, toggling structural entities, modifying the system under test, or altering the position of NPCs. 
+  
+Together, these phases provide a reproducible workflow for executing, recording, and replaying autonomous driving scenarios with modifications in CARLA environment, enabling systematic evaluation of ADS performance under different conditions.
 
 ![Overall Architecture of `REMO`\label{fig:architecture}](remo-overview.png)
 
-
-
 ## Repository and Installation
 
-The tool requires Python 3.8 and Carla version 0.9.15. 
+The tool requires Python 3.8 and CARLA version 0.9.15. 
 The source code of `REMO`, including detailed installation instructions and example scripts, is hosted on GitHub: [https://github.com/RSE-Sheffield/REMO](https://github.com/RSE-Sheffield/REMO).
 
 ## AI Usage Disclosure
@@ -75,6 +80,7 @@ This work was supported by the Institute of Information & Communications Technol
 
 
 ## References
+
 
 
 
