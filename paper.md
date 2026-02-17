@@ -48,6 +48,21 @@ Although CARLA supports record and replay functionality, it lacks the ability to
 It allows users to systematically explore how different factors contribute to ADS failures by enabling controlled modifications of the simulation environment.
 It also supports ADS-agnostic testing by allowing scenario replay without an ego vehicle, facilitating fair comparisons between different ADS models under identical conditions.
 
+## Software Design 
+To ensure fair, reproducible, and flexible testing of ADS, we adopted the following design and architectural choices:
+
+- **Separation of scenario and ego vehicle/ADS**: When the ego vehicle is tightly coupled to the scenario, it is difficult to test multiple ADS implementations fairly or to modify the environment without affecting the behaviour of the ego vehicle. Instead, we separate the scenario from the ego vehicle, allowing the same scenario to be reused with different ADS or under modified environmental conditions. This ensures fair comparisons, controlled testing, and flexible scenario modifications without altering the core dynamics.
+
+- **Deterministic replay**: Reproducibility and debugging are essential in ADS testing. While non-deterministic replay could capture real-world variability, it complicates debugging and comparative evaluation. Therefore, we use deterministic replay, which ensures that the same scenario produces identical outcomes across multiple runs. This deterministic design also allows configurable modifications to test system robustness while maintaining consistent and reliable results.
+
+- **Comparison of multiple ADSs**: To test different ADS implementations under identical conditions, we separate the ego vehicle from the scenario. The ego vehicle can be replaced dynamically, enabling controlled comparisons with or without modifying scenario entities or other environmental factors. This design choice supports benchmarking and performance evaluation across multiple ADSs.
+
+- **Control of individual entities**: Each dynamic or structural entity in the scenario is encoded as an independent vector dimension, allowing precise control over its behaviour. This design allows recording, replaying, and modifying each entity independently, which is essential for debugging complex interactions and testing specific failure cases.
+
+- **Architectural design for reproducibility, repeatability, and flexibility**: The system supports recording, deterministic replay, scenario modification, and dynamic injection of ego vehicles/ADS. This architecture simplifies repeating experiments i.e., replaying the same scenario multiple times, comparing multiple ADSs, and modifying scenarios. This reduces manual effort, accelerates experimentation, and makes it easier for users to reproduce scenarios, analyse failures, and test new ADS configurations.
+
+Together, these design choices prioritise reproducibility, flexibility, and usability, enabling controlled, realistic, and repeatable evaluation of ADS while supporting research, debugging, and development workflows.
+
 ## Research Impact 
 REMO addresses a fundamental limitation in ADS: the lack of deterministic scenario replay and controlled scenario modification in CARLA-based testing workflows. It fills a critical gap between high-fidelity simulation and reproducible ADS evaluation by enabling the recording, deterministic replay, and modification of critical driving scenarios.
 
@@ -78,6 +93,7 @@ This work was supported by the Institute of Information & Communications Technol
 
 
 ## References
+
 
 
 
