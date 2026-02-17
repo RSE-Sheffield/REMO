@@ -63,7 +63,7 @@ To ensure fair, reproducible, and flexible testing of ADS, we adopted the follow
 
 Together, these design choices prioritise reproducibility, flexibility, and usability, enabling controlled, realistic, and repeatable evaluation of ADS while supporting research, debugging, and development workflows.
 
-## Research Impact 
+## Research Impact Statement
 REMO addresses a fundamental limitation in ADS: the lack of deterministic scenario replay and controlled scenario modification in CARLA-based testing workflows. It fills a critical gap between high-fidelity simulation and reproducible ADS evaluation by enabling the recording, deterministic replay, and modification of critical driving scenarios.
 
 The deterministic scenario replay, including NPC trajectories, with controlled changes to environmental and structural entities in REMO, improves the reliability and fairness of ADS benchmarking and debugging of failure scenarios. This capability enables researchers and developers to isolate the root causes of ADS failures, compare multiple ADS under identical conditions, and examine the effects of environmental variation on scenario simplification.
@@ -93,6 +93,7 @@ This work was supported by the Institute of Information & Communications Technol
 
 
 ## References
+
 
 
 
