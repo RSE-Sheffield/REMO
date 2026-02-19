@@ -63,11 +63,11 @@ To ensure fair, reproducible, and flexible testing of ADS, we adopted the follow
 
 - **Comparison of multiple ADSs**: To test different ADS implementations under identical conditions, we separate the ego vehicle from the scenario. The ego vehicle can be replaced dynamically, enabling controlled comparisons with or without modifying scenario entities or other environmental factors. This design choice supports benchmarking and performance evaluation across multiple ADSs.
 
-- **Control of individual entities**: Each dynamic or structural entity in the scenario is encoded as an independent vector dimension, allowing precise control over its behaviour. This design allows recording, replaying, and modifying each entity independently, which is essential for debugging complex interactions and testing specific failure cases.
+- **Control of individual entities**: Each dynamic or structural entity in the scenario is encoded as an independent vector dimension, allowing precise control over its behaviour. This design allows recording, replaying, and modifying each entity independently, which is essential for debugging complex interactions and testing specific failure cases. 
 
 - **Architectural design for reproducibility, repeatability, and flexibility**: The design supports recording, deterministic replay, scenario modification, and dynamic injection of ego vehicles/ADS. This architectural design simplifies recording the scenario, replaying the same scenario multiple times using the user-specified ADS, and modifying the scenarios. This reduces manual effort, accelerates experimentation, and makes it easier for users to reproduce scenarios, analyse failures, and test and evaluate new ADSs.
 
-Together, these design choices prioritise reproducibility, flexibility, and usability, enabling controlled, realistic, and repeatable evaluation of ADS while supporting research, debugging, and development workflows.
+The package is API-driven, allowing its features to be used independently or in combination. Together, all these design choices prioritise reproducibility, flexibility, and usability, enabling controlled, realistic, and repeatable evaluation of ADS while supporting research, debugging, and development workflows. 
 
 ## Research Impact Statement
 `REMO` addresses a fundamental limitation in ADS: the lack of deterministic scenario replay and controlled scenario modification in CARLA-based testing workflows. It fills a critical gap between high-fidelity simulation and reproducible ADS evaluation by enabling the recording, deterministic replay, and modification of critical driving scenarios.
@@ -99,6 +99,7 @@ This work was supported by the Institute of Information & Communications Technol
 
 
 ## References
+
 
 
 
