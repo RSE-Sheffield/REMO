@@ -1,5 +1,7 @@
 # REMO: Deterministic Scenario Record and Replay with Modification for ADS Debugging in CARLA
 
+![alt text](https://github.com/RSE-Sheffield/REMO/blob/main/remo-overview.png)
+
 ## Prerequisites
 - Carla 0.9.15
 - Python 3.8
